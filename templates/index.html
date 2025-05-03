@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FitAI Webcam</title>
+  <title>FitAI - Real-time Rep Counter</title>
   <style>
     body {
       margin: 0;
@@ -23,62 +23,24 @@
       margin-bottom: 20px;
     }
 
-    video {
+    img {
       border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 640px;
+      height: 480px;
+      object-fit: cover;
     }
 
-    button {
-      background-color: #0071e3;
-      color: white;
-      font-size: 1rem;
-      font-weight: 500;
-      border: none;
-      border-radius: 12px;
-      padding: 12px 30px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #005bb5;
-    }
-
-    canvas {
-      display: none;
+    p {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <h1>🎥 FitAI - Smart Webcam Capture</h1>
-  <video id="video" width="640" height="480" autoplay></video>
-  <canvas id="canvas" width="640" height="480"></canvas>
-  <button onclick="capture()">📸 Capture</button>
-
-  <script>
-    const video = document.getElementById('video');
-
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => video.srcObject = stream)
-      .catch(err => console.error("Webcam access denied:", err));
-
-    function capture() {
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      const dataURL = canvas.toDataURL('image/png');
-
-      fetch('/upload', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: dataURL })
-      })
-      .then(res => res.json())
-      .then(data => alert(data.message))
-      .catch(err => console.error('Upload error:', err));
-    }
-  </script>
+  <h1>💪 FitAI - Real-time Rep Counter</h1>
+  <img src="{{ url_for('video_feed') }}" alt="Live Video Stream">
+  <p>Track your reps using real-time pose detection!</p>
 </body>
 </html>
